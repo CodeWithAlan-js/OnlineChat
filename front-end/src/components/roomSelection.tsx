@@ -10,13 +10,8 @@ import {
 } from "@/components/ui/select";
 import { useUser } from "@/context/userContext";
 
-
 const RoomSelection = () => {
-  const { handleSelectRoom, room } = useUser();
-
-  
-
-  console.log(room);
+  const { handleSelectRoom } = useUser();
 
   return (
     <div className="w-4/5 ">

@@ -5,11 +5,17 @@ import InputName from "@/components/inputName";
 import { useUser } from "@/context/userContext";
 import { useNavigate } from "react-router";
 import RoomSelection from "@/components/roomSelection";
+import { Socket } from "socket.io-client";
 
-const LogPage: React.FC = () => {
+
+interface LogPageProps {
+  socket: Socket;
+}
+
+const LogPage: React.FC<LogPageProps> = ({ socket }) => {
   const { user, room } = useUser();
   const navigate = useNavigate();
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>("");  
 
   const handleClick = () => {
     if (user === "" && room === "") {
@@ -20,20 +26,21 @@ const LogPage: React.FC = () => {
       setError("Please select a room");
     } else {
       setError("");
-      navigate("/chat");
     }
+    socket.emit("join_room", { user, room });
+      navigate("/chat");
   };
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
       <div className="h-2/5 flex flex-col justify-around items-center">
         <div>
-          <p className="text-5xl mr-8 font-bold text-text-primary font-Montserrat">
+          <p className="text-5xl mr-8 font-bold text-primary font-Montserrat">
             LoveLoop
           </p>
           <div className="flex items-center w-full justify-center gap-1 ml-8">
             <p className="font-Indie text-xl">Online chat for finding love</p>
-            <CiHeart className="text-2xl text-text-primary" />
+            <CiHeart className="text-2xl text-primary" />
           </div>
         </div>
         {error && <p className="text-red-500  w-full">{error}</p>}
