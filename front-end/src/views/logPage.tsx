@@ -26,9 +26,9 @@ const LogPage: React.FC<LogPageProps> = ({ socket }) => {
       setError("Please select a room");
     } else {
       setError("");
+      socket.emit("join_room", { user, room });
+        navigate("/chat");
     }
-    socket.emit("join_room", { user, room });
-      navigate("/chat");
   };
 
   return (
