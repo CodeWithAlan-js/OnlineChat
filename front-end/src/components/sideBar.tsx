@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Socket } from "socket.io-client";
+import LeaveButton from "./leaveButton";
 
 interface SideBarProps {
   socket: Socket;
@@ -23,6 +24,11 @@ const SideBar: React.FC<SideBarProps> = ({ socket }) => {
       localStorage.setItem("usersInRoom", JSON.stringify(users));
     });
 
+    socket.on("user_left", ({ users }) => {
+      setUsersInRoom(users);
+      localStorage.setItem("usersInRoom", JSON.stringify(users));
+    });
+
     return () => {
       socket.off("new_user");
       socket.off("users_in_room");
@@ -30,14 +36,15 @@ const SideBar: React.FC<SideBarProps> = ({ socket }) => {
   }, [socket]);
 
   return (
-    <div className="h-full w-1/5 bg-primary flex flex-col justify-between items-center">
-      <div className="h-1/3 mt-5">
+    <div className="h-full w-1/5 bg-primary relative">
+      <div className="h-1/6 mt-5 flex flex-col justify-between items-center">
         {usersInRoom.map((user) => (
           <Avatar key={user}>
             <AvatarFallback>{user[0]}</AvatarFallback>
           </Avatar>
         ))}
       </div>
+      <LeaveButton socket={socket} />
     </div>
   );
 };

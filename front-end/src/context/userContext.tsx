@@ -6,6 +6,7 @@ interface UserContextType {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectRoom: (selectedRoom: Room) => void;
   room: string;
+  setRoom: (value: Room) => void;
 }
 
 type Room = "" | "room1" | "room2" | "room3" | "room4" | "room5";
@@ -26,7 +27,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
     return (
-        <UserContext.Provider value={{ user, setUser, handleChange, handleSelectRoom, room }}>
+        <UserContext.Provider value={{ user, setUser, handleChange, handleSelectRoom, setRoom, room }}>
             {children}
         </UserContext.Provider>
     );

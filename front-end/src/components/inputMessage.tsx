@@ -10,7 +10,7 @@ interface InputMessageProps {
 
 
 const InputMessage: React.FC<InputMessageProps> = ({ socket }) => {
-    const { room } = useUser();
+    const { room, user } = useUser();
     const [message, setMessage] = React.useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,15 +19,15 @@ const InputMessage: React.FC<InputMessageProps> = ({ socket }) => {
 
     const handleClick = () => {
         if (message.trim() !== "") {
-            socket.emit("send_message", { message: message, room: room }); 
+            socket.emit("send_message", { message: message, room: room, user: user}); 
             setMessage("");
         }
     }
 
 
   return (
-    <div className="w-full h-full flex justify-center items-end">
-      <div className="w-full flex justify-evenly items-center h-24 border-t border-secondary">
+    <div className="w-full flex items-end h-20 border-t border-secondary">
+      <div className="w-full flex justify-evenly items-center h-full ">
         <Input onChange={handleChange} className="w-3/5" placeholder="Type your message..." />
         <Button onClick={handleClick} className="bg-secondary" variant="default">Send</Button>
       </div>
