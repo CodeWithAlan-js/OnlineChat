@@ -27,7 +27,7 @@ const MessageDisplay: React.FC<MessageDisplayProps> = ({ socket }) => {
         return (
           <div
             key={index}
-            className=" bg-gray-100 m-5 min-h-20 max-w-full flex flex-col rounded"
+            className=" bg-gray-100 m-5 min-h-20 w-auto flex flex-col rounded"
           >
             <div className="flex justify-between ml-2 mr-2 mt-2">
               <p className="text-[#607b7d] font-Montserrat text-sm">

@@ -35,9 +35,11 @@ const SideBar: React.FC<SideBarProps> = ({ socket }) => {
     };
   }, [socket]);
 
+  console.log(usersInRoom);
+
   return (
     <div className="h-full w-1/5 bg-primary relative">
-      <div className="h-1/6 mt-5 flex flex-col justify-between items-center">
+      <div className="mt-5 flex flex-col justify-between items-center">
         {usersInRoom.map((user) => (
           <Avatar key={user}>
             <AvatarFallback>{user[0]}</AvatarFallback>

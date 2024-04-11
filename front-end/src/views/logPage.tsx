@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import RoomSelection from "@/components/roomSelection";
 import { Socket } from "socket.io-client";
 
-
 interface LogPageProps {
   socket: Socket;
 }
@@ -15,19 +14,27 @@ interface LogPageProps {
 const LogPage: React.FC<LogPageProps> = ({ socket }) => {
   const { user, room } = useUser();
   const navigate = useNavigate();
-  const [error, setError] = useState<string>("");  
+  const [error, setError] = useState<string>("");
+
 
   const handleClick = () => {
+
+    socket.on("room_full", () => {
+      setError("Room is full, please select another room");
+    });
+
     if (user === "" && room === "") {
       setError("Please enter your name and select a room");
     } else if (user === "") {
       setError("Please enter your name");
     } else if (room === "") {
       setError("Please select a room");
-    } else {
+    } 
+    
+    else {
       setError("");
       socket.emit("join_room", { user, room });
-        navigate("/chat");
+      navigate("/chat");
     }
   };
 

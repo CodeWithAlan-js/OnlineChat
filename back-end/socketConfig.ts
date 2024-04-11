@@ -1,4 +1,23 @@
 import { Socket, Server } from "socket.io";
+import { MessageModel } from "./models/messageModels";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const MONGO_URI = process.env.MONGO_URI || "";
+
+mongoose.connect(MONGO_URI);
+
+const saveMessageToDB = async (content: string, user: string, room: string) => {
+    try {
+        const message = new MessageModel({ content, user, room });
+        await message.save();
+        console.log('Message saved to database:', message);
+    } catch (error) {
+        console.error('Error saving message to database:', error);
+    }
+};
 
 
 let chatRooms: { [key: string]: string[] } = {};
@@ -12,7 +31,6 @@ const handleJoinRoom = (
   room: string,
   user: string
 ) => {
-    
   socket.join(room);
   if (!chatRooms[room]) {
     chatRooms[room] = [];
@@ -29,15 +47,16 @@ const handleJoinRoom = (
   });
 };
 
-const handleSendMessage = (
-  io: Server,
-  socket: Socket,
-  message: string,
-  room: string,
-  user: string
+const handleSendMessage = async (
+    io: Server,
+    socket: Socket,
+    message: string,
+    room: string,
+    user: string,
 ) => {
-  const timestamp = getCurrentTimestamp();
-  io.to(room).emit("new_message", { message, user, timestamp });
+    const timestamp = getCurrentTimestamp();
+    await saveMessageToDB(message, user, room);
+    io.to(room).emit("new_message", { message, user, timestamp });
 };
 
 const handleLeaveRoom = (

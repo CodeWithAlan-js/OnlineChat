@@ -1,11 +1,15 @@
 import mongoose from 'mongoose';
 
 interface IMessage {
-    message: string;
+    content: string;
+    user: string;
+    room: string;
     }
 
 const messageSchema = new mongoose.Schema<IMessage>({
-    message: String,
+    content: String,
+    user: String,
+    room: String,
 });
 
 const MessageModel = mongoose.model('Message', messageSchema);

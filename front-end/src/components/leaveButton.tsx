@@ -22,7 +22,7 @@ const LeaveButton: React.FC<LeaveButtonProps> = ({ socket }) => {
     console.log(user, room);
 
     return (
-        <button onClick={handleClick} className="absolute bottom-0 w-full h-16 bg-transparent flex justify-center items-center">
+        <button onClick={handleClick} className="absolute border-t  bottom-0 w-full h-[73px] bg-transparent flex justify-center items-center">
             <IoMdExit className="text-white text-3xl" />
         </button>
     );
