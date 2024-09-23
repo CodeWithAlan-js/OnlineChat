@@ -10,15 +10,13 @@ const MONGO_URI = process.env.MONGO_URI || "";
 mongoose.connect(MONGO_URI);
 
 const saveMessageToDB = async (content: string, user: string, room: string) => {
-    try {
-        const message = new MessageModel({ content, user, room });
-        await message.save();
-        console.log('Message saved to database:', message);
-    } catch (error) {
-        console.error('Error saving message to database:', error);
-    }
+  try {
+    const message = new MessageModel({ content, user, room });
+    await message.save();
+  } catch (error) {
+    console.error("Error saving message to database:", error);
+  }
 };
-
 
 let chatRooms: { [key: string]: string[] } = {};
 const getCurrentTimestamp = () => {
@@ -48,15 +46,15 @@ const handleJoinRoom = (
 };
 
 const handleSendMessage = async (
-    io: Server,
-    socket: Socket,
-    message: string,
-    room: string,
-    user: string,
+  io: Server,
+  socket: Socket,
+  message: string,
+  room: string,
+  user: string
 ) => {
-    const timestamp = getCurrentTimestamp();
-    await saveMessageToDB(message, user, room);
-    io.to(room).emit("new_message", { message, user, timestamp });
+  const timestamp = getCurrentTimestamp();
+  await saveMessageToDB(message, user, room);
+  io.to(room).emit("new_message", { message, user, timestamp });
 };
 
 const handleLeaveRoom = (

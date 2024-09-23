@@ -35,8 +35,6 @@ const SideBar: React.FC<SideBarProps> = ({ socket }) => {
     };
   }, [socket]);
 
-  console.log(usersInRoom);
-
   return (
     <div className="h-full w-1/5 md:w-1/6 bg-primary relative">
       <div className="mt-5 flex flex-col justify-between items-center min-h-32 ">
